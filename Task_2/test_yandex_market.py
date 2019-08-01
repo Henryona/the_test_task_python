@@ -13,6 +13,7 @@ from pages.locators import BasePageLocators
 from pages.locators import YandexMainPageLocators
 from pages.locators import YaMarketPageLocators
 from pages.locators import ProductPageLocators
+from selenium.webdriver.support.ui import WebDriverWait as wait
 import pytest
 
 @pytest.mark.parametrize( \
@@ -26,9 +27,7 @@ def test_compare_product_names(browser, subcategory, manufactor, price_from, pri
     page.find_and_click(*YandexMainPageLocators.YANDEX_MARKET_BUTTON)
 
     # подтверждаем алерт: "Вы находитесь в ..."
-    input()
-    alert = browser.switch_to.alert
-    alert.accept()
+    wait(browser, 10).until((page.is_alert_present(browser)))
 
     # переходим в раздел и затем в подраздел
     page.find_and_click(*YaMarketPageocators.CATEGORY_ELECTRONIC)
@@ -39,7 +38,7 @@ def test_compare_product_names(browser, subcategory, manufactor, price_from, pri
     page.decide_what_need_to_type(price_from, price_to)
 
     # ожидание появления всплывающего флажка, показывающего, что фильтр применился
-    wait(driver, 10).until(EC.visibility_of_element_located(*YaMarketPageocators.POP_UP_CONFIRM))
+    wait(browser, 10).until(EC.visibility_of_element_located(*YaMarketPageocators.POP_UP_CONFIRM))
 
     # запоминаем название первого товара
     product_name_on_desk = page.remember_info(*YaMarketPageocators.FIRST_PRODUCT_NAME)

@@ -1,7 +1,7 @@
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from .locators import BasePageLocators
 
@@ -36,4 +36,11 @@ class BasePage(object):
 
     def remember_info(self, *locator):
         return self.browser.find_element(locator).text
-	
+
+    def is_alert_present(self, browser):
+        try:
+            alert = browser.switch_to.alert
+            alert.accept()
+        except (NoAlertPresentException):
+            return False
+        return True
