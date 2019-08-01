@@ -12,15 +12,28 @@ class BasePage(object):
         # неявное ожидание
         self.browser.implicitly_wait(timeout)
 		
-	def open(self):
+    def open(self):
         self.browser.get(self.url)
 
     def go_to_login_page(self):
         link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
 
-    def find_and_click(self, locator):
-        element = self.browser.find_element(locator)
-		element.click()
-		
+    def find_and_click(self, *locator):
+        element = self.browser.find_element(*locator)
+        element.click()
+
+    def wait_and_click(self, *locator):
+        waited_elememt = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(locator))
+        waited_element.click()
+    
+    def find_and_type(self, *locator, message):
+        input_element = self.browser.find_element(locator)
+        input_element.send_keys(message)
+
+    def product_name_should_match(self, first_name, second_name):
+        assert first_name == second_name, "Названия товара не совпали, тест провален"
+
+    def remember_info(self, *locator):
+        return self.browser.find_element(locator).text
 	
