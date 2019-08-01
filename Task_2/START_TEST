@@ -1,0 +1,1 @@
+pytest -s -v --browser_name=chrome test_yandex_market.py
