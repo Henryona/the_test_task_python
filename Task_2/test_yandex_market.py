@@ -7,6 +7,7 @@
 # товара в превью в сетке результатов найденных товаров.
 '''
 
+from pages.base_page import for_wait_is_element_present
 from pages.yamarket_page_ import YaMarketPage
 from pages.yandex_page import YandexMainPage
 from pages.locators import BasePageLocators
@@ -14,6 +15,7 @@ from pages.locators import YandexMainPageLocators
 from pages.locators import YaMarketPageLocators
 from pages.locators import ProductPageLocators
 from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.support import expected_conditions as EC
 import pytest
 
 @pytest.mark.parametrize( \
@@ -26,22 +28,25 @@ def test_compare_product_names(browser, subcategory, manufactor, price_from, pri
     page.open()
     page.find_and_click(*YandexMainPageLocators.YANDEX_MARKET_BUTTON)
 
-    # подтверждаем алерт: "Вы находитесь в ..."
-    wait(browser, 10).until((page.is_alert_present(browser)))
+    # подтверждаем алерт: "Вы находитесь в <название_города>"
+    # на самом деле, он не алерт, а просто всплывающее окошко, к которому даже accept() не применить :с 
+    alert = wait(browser, 10).until(for_wait_is_element_present(*YaMarketPageLocators.NOTIFICATION))
+    alert.click()
 
     # переходим в раздел и затем в подраздел
-    page.find_and_click(*YaMarketPageocators.CATEGORY_ELECTRONIC)
-    page.find_and_click(subcategory)
+    page.find_and_click(*YaMarketPageLocators.CATEGORY_ELECTRONIC)
+    page.find_and_click(*subcategory)
 
     # выбираем производителя и устанавливаем мин\макс цену
-    page.wait_and_click(manufactor)
+    alert = wait(browser, 10).until(for_wait_is_element_present(*manufactor))
+    alert.click()
     page.decide_what_need_to_type(price_from, price_to)
 
     # ожидание появления всплывающего флажка, показывающего, что фильтр применился
-    wait(browser, 10).until(EC.visibility_of_element_located(*YaMarketPageocators.POP_UP_CONFIRM))
+    wait(browser, 10).until(for_wait_is_element_present(*YaMarketPageLocators.NOTIFICATION))
 
     # запоминаем название первого товара
-    product_name_on_desk = page.remember_info(*YaMarketPageocators.FIRST_PRODUCT_NAME)
+    product_name_on_desk = page.remember_info(*YaMarketPageLocators.FIRST_PRODUCT_NAME)
 
     # переходим на страницу товара и запоминаем название товара в тайтле
     page.find_and_click(*YaMarketPageocators.FIRST_PRODUCT_NAME)

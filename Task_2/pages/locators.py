@@ -11,6 +11,7 @@ class YaMarketPageLocators():
     MOBILE_PRICE_TO = ""
     HEADPHONES_PRICE_FROM = "17000"
     HEADPHONES_PRICE_TO = "25000"
+    NOTIFICATION = (By.CLASS_NAME, "n-region-notification__actions-btn")
     CATEGORY_ELECTRONIC = (By.LINK_TEXT, "Электроника")
     SUBCATEGORY_MOBILE_PHONES = (By.LINK_TEXT, "Мобильные телефоны")
     SUBCATEGORY_HEADPHONES = (By.LINK_TEXT, "Наушники и Bluetooth-гарнитуры")
