@@ -17,10 +17,13 @@ class YaMarketPageLocators():
     SUBCATEGORY_HEADPHONES = (By.LINK_TEXT, "Наушники и Bluetooth-гарнитуры")
     MIN_PRICE_INPUT = (By.ID, "glpricefrom")
     MAX_PRICE_INPUT = (By.ID, "glpriceto")
-    SAMSUNG_CHECKBOX = (By.ID, "7893318_153061")
-    BEATS_CHECKBOX = (By.ID, "7893318_8455647")
-    POP_UP_CONFIRM = (By.CLASS_NAME, "_1PQIIOelRL")
+    SAMSUNG_CHECKBOX = (By.CSS_SELECTOR, '[for="7893318_153061"]')
+    BEATS_CHECKBOX = (By.CSS_SELECTOR, '[for="7893318_8455647"]')
+    POP_UP_CONFIRM = (By.XPATH, '//div[contains(text(), "Найдено ")]')  
+#"[class='_2E5mtWI4YB _2b6OiXTTPs _3m5L8ZAmG5']") 
     FIRST_PRODUCT_NAME = (By.CSS_SELECTOR, "div.n-snippet-cell2__title a.link")
 
 class ProductPageLocators():
     TITLE_PRODUCT_NAME = (By.CSS_SELECTOR, ".n-title__text h1")
+
+
